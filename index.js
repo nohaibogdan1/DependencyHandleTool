@@ -30,7 +30,7 @@ function emptyFoldersRecursively(filepath) {
 }
 
 function removeStuff() {
-    const folder = '/home/nohai/projects/vetrical/truepill/optum-frontend-four/optum-frontend/src/';
+    const folder = 'put here folder path';
 
     ['templates', 
     'services',
@@ -86,8 +86,8 @@ function copyDependencies (dep) {
 function findImports () {
     // const nonExistent = [];
     var tree = dependencyTree({
-        filename: '/home/nohai/projects/vetrical/truepill/optum-frontend-three/optum-frontend/src/pages/virtual-care/virtual-visit/checkout/index.tsx',
-        directory: '/home/nohai/projects/vetrical/truepill/optum-frontend-three/optum-frontend',
+        filename: 'file wanted',
+        directory: '',
         filter: path => path.indexOf('node_modules') === -1 && path.indexOf('gatsby') === -1, // optional,
         // nonExistent: nonExistent,
         isListForm: true, // tree will be an array of filepaths
@@ -95,10 +95,14 @@ function findImports () {
 
     saveToFile(tree);
 
-    copyDependencies(tree);
+    // copyDependencies(tree);
 }
 
 // removeStuff();
 
 // findImports();
+
+module.exports = {
+    findImports
+};
 

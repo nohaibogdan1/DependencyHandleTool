@@ -12,7 +12,9 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "big-json": "^3.1.0",
     "dependency-tree": "^8.1.2",
+    "json-stream-stringify": "^2.0.4",
     "precinct": "^9.0.0"
   }
 }

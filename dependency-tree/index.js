@@ -28,7 +28,6 @@ let depList = [];
  */
 module.exports = function(options) {
   const config = new Config(options);
-  // config.isListForm = true;
 
   if (!fs.existsSync(config.filename)) {
     debug('file ' + config.filename + ' does not exist');
@@ -53,7 +52,6 @@ module.exports = function(options) {
     tree[config.filename] = results;
   }
 
-  debug('final tree', tree);
   return tree;
 };
 
@@ -146,7 +144,6 @@ module.exports._getDependencies = function(config) {
  * @return {Object|Set}
  */
 function traverse(config) {
-  config.isListForm = true;
   let subTree = config.isListForm ? new Set() : {};
 
   // console.log('traversing ' + config.filename);
