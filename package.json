@@ -12,6 +12,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "dependency-tree": "^8.1.2",
     "precinct": "^9.0.0"
   }
 }
