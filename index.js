@@ -2,8 +2,8 @@ const fs = require('fs');
 const path = require('path');
 const dependencyTree = require('./dependency-tree');
 
-const PROJECT_PARENT_FOLDER_NAME = 'optum-frontend-three';
-const PROJECT_SIMPLE_PARENT_FOLDER_NAME = 'optum-frontend-four';
+const PROJECT_PARENT_FOLDER_NAME = '';
+const PROJECT_SIMPLE_PARENT_FOLDER_NAME = '';
 
 function getDependencies() {
     const raw = fs.readFileSync('dependencies.json');
