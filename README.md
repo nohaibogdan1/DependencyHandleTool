@@ -48,5 +48,6 @@ In order to a project that runs faster it needs to be smaller.
 
 ## Important
 Files required by ```uri``` in css are not copied
+<br/>
 Tests files are not copied
 
