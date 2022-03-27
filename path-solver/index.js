@@ -77,9 +77,7 @@ function pathSolver({
 
     for (const handler of handlers) {
         const data = handler({partial, filename, directory});
-        // console.log('d', data);
         if (data) {
-            // console.log(data);
             return data;
         }
     }

@@ -85,28 +85,28 @@ module.exports._getDependencies = function(config) {
   let dependencies;
   const precinctOptions = config.detectiveConfig;
   precinctOptions.includeCore = false;
-  // precinctOptions.tsx = {
-  //   mixedImports: true,
-  // }
+  precinctOptions.tsx = {
+    mixedImports: true,
+  }
 
   try {
+    // console.log(fs.statSync(config.filename).isDirectory())
     if (fs.statSync(config.filename).isDirectory()) {
       dependencies = [
         config.filename + '/index.tsx', 
         config.filename + '/index.ts', 
       ];
+      // console.log('de', dependencies)
     } else {
       dependencies = precinct.paperwork(config.filename, precinctOptions);
     }
     
   } catch (e) {
     // console.log('error getting dependencies: ' + e.message);
-    // console.log(e.stack);
     return [];
   }
 
   const resolvedDependencies = [];
-  // console.log(dependencies);
   for (let i = 0, l = dependencies.length; i < l; i++) {
     let dep = dependencies[i];
 
@@ -154,6 +154,7 @@ function traverse(config) {
   }
 
   let dependencies = module.exports._getDependencies(config);
+  // console.log('dep', dependencies)
 
   // console.log('cabinet-resolved all dependencies: ', dependencies);
   // Prevents cycles by eagerly marking the current file as read

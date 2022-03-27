@@ -1,108 +1,44 @@
-const fs = require('fs');
 const path = require('path');
-const dependencyTree = require('./dependency-tree');
+const fsPromises = require('fs').promises;
+const cleanup = require('./cleanup/index');
+const findImports = require('./find-imports/index');
+const findFileUsability = require('./find-file-usability/index');
 
-const PROJECT_PARENT_FOLDER_NAME = '';
-const PROJECT_SIMPLE_PARENT_FOLDER_NAME = '';
-
-function getDependencies() {
-    const raw = fs.readFileSync('dependencies.json');
-    const dependencies = JSON.parse(raw);
-    return dependencies;
-}
-
-function copyDependency(path1, path2) {
-    fs.copyFileSync(path1, path2);
-}
-
-function emptyFoldersRecursively(filepath) {
-    const isDir = fs.statSync(filepath).isDirectory();
-    if (isDir) {
-        const files = fs.readdirSync(filepath);
-        for (const f of files) {
-            var fullPath = path.join(filepath, f);
-            emptyFoldersRecursively(fullPath);
-        }
-
-    } else {
-        fs.rmSync(filepath);
-    }
-}
-
-function removeStuff() {
-    const folder = 'put here folder path';
-
-    ['templates', 
-    'services',
-    'pages',
-    'page-components', 
-    'components',
-    'core',
-    'utils'].forEach(
-        elem => emptyFoldersRecursively(`${folder}${elem}`));
-}
-
-function replaceString(str, str1, str2) {
-    const newString = str.split(str1).join(str2);
-    return newString;
-}
-
-function saveToFile(tree) {
-    fs.appendFileSync('dependency.json', '[');
-
-    for (const t of tree) {
-        fs.appendFileSync('dependency.json', '"' + t + '"' + ',\n');
-    }
-    fs.appendFileSync('dependency.json', ']');
-}
-
-function copyDependencyToSimpleProject(d) {
-    copyDependency(
-        d,  
-        replaceString(d, PROJECT_PARENT_FOLDER_NAME, PROJECT_SIMPLE_PARENT_FOLDER_NAME)
-    );
-}
-
-function copyDependencies (dep) {
-    let dependencies = [];
-
-    if (!dep) {
-        dependencies = objToArray(getDependencies());
-    } else {
-        dependencies = [...dep];
-    }
-    let len = dependencies.length;
-
-    for (const d of dependencies) {
-        console.log(len--);
-        try {
-            copyDependencyToSimpleProject(d);
-        } catch(e) {
-            // console.log('e', e);
-        }
-    }
-}
-
-function findImports () {
-    // const nonExistent = [];
-    var tree = dependencyTree({
-        filename: 'file wanted',
-        directory: '',
-        filter: path => path.indexOf('node_modules') === -1 && path.indexOf('gatsby') === -1, // optional,
-        // nonExistent: nonExistent,
-        isListForm: true, // tree will be an array of filepaths
-    });
-
-    saveToFile(tree);
-
-    // copyDependencies(tree);
-}
-
-// removeStuff();
-
-// findImports();
-
-module.exports = {
-    findImports
+const commands = {
+    'cleanup': cleanup.main,
+    'find-imports': findImports.main,
+    'find-file-usability': findFileUsability.main,
 };
 
+async function main() {
+    const args = process.argv.slice(2);
+
+    if (args.length === 0 || !Object.keys(commands).includes(args[0])) {
+        console.log('A valid command was not given');
+        console.log('Valid commands: cleanup, find-imports, find-file-usability');
+        return;
+    }
+
+    if (!args[1]) {
+        console.log('A path was not given');
+        return;   
+    }
+
+    const [command, filepath] = args;
+
+    if (!path.isAbsolute(filepath)) {
+        console.log(`The given path is not absolute path`);
+        return;
+    }
+
+    try {
+        await fsPromises.access(filepath);
+    } catch (_) {
+        console.log(`The given path doesn't exist`);
+        return;
+    }
+
+    commands[command](filepath);
+}
+
+main();
