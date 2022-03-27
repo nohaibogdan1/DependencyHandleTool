@@ -66,7 +66,7 @@ function main(filePath) {
 
     /** eliminate directories from tree directory filepaths */
     const newTree = tree.filter(path => path.includes('.'));
-    saveToFile(newTree); /** save to external file for debug */
+    // saveToFile(newTree); /** save to external file for debug */
     copyDependencies(newTree);
 }
 

@@ -8,6 +8,8 @@ Use command:
 node index.js find-file-usability absolute_file_path
 ```
 
+Check the file ```find-file-usability/json-files/usabilityChains.json```
+
 <br/>
 
 
