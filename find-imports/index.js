@@ -6,21 +6,6 @@ const PROJECT_ABSOLUTE_PATH = '';
 const NEW_PROJECT_ABSOLUTE_PATH = '';
 const DEPENDENCIES_FILE = 'find-imports/json-files/dependencies.json';
 
-async function getDependencies() {
-    const raw = await fsPromises.readFile(DEPENDENCIES_FILE);
-    const dependencies = JSON.parse(raw);
-    return dependencies;
-}
-
-async function copyDependency(path1, path2) {
-    await fsPromises.copyFile(path1, path2);
-}
-
-function replaceString(str, str1, str2) {
-    const newString = str.split(str1).join(str2);
-    return newString;
-}
-
 async function saveToFile(tree) {
     try {
         await fsPromises.rm(DEPENDENCIES_FILE);
@@ -47,7 +32,6 @@ async function copyDependencies (dependencies) {
                     dependency.split(PROJECT_ABSOLUTE_PATH)[1])
                 );
         } catch(e) {
-            // console.log('e', e);
         }
     }
 }
